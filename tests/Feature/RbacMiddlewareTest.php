@@ -40,4 +40,21 @@ class RbacMiddlewareTest extends TestCase
             return response('ok', 200);
         }, 'Administrator');
     }
+
+    public function test_allows_alias_role()
+    {
+        // user has canonical role "Administrator" but middleware is asked for alias 'admin'
+        $user = new User(['user_role' => 'Administrator']);
+
+        $request = Request::create('/test', 'GET');
+        $request->setUserResolver(fn () => $user);
+
+        $middleware = new RoleMiddleware();
+
+        $response = $middleware->handle($request, function ($req) {
+            return response('ok', 200);
+        }, 'admin');
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }

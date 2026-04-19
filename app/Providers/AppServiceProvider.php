@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
+use App\Models\SystemSettingsModel\ManageRolesModel;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +28,95 @@ class AppServiceProvider extends ServiceProvider
             }
             return auth()->user()->hasAnyRole($roles);
         });
+
+
+
+        // Helper to resolve a user's canonical role name
+        $resolveRoleName = function ($user) {
+            if (! $user) {
+                return null;
+            }
+
+            try {
+                if (method_exists($user, 'getRoleName')) {
+                    return $user->getRoleName();
+                } elseif (isset($user->user_role) && is_numeric($user->user_role)) {
+                    $r = ManageRolesModel::find((int) $user->user_role);
+                    return $r->name ?? null;
+                } elseif (isset($user->role) && $user->role) {
+                    return $user->role->name ?? null;
+                }
+            } catch (\Throwable $e) {
+                return null;
+            }
+
+            return null;
+        };
+
+        // Gate: hide for Super Administrator only
+        $hideIfSuperAdmin = function ($user) use ($resolveRoleName) {
+            if (! $user) {
+                return false;
+            }
+
+            try {
+                $roleName = $resolveRoleName($user);
+                if ($roleName && strcasecmp($roleName, 'Super Administrator') === 0) {
+                    return false; // hide for Super Administrator
+                }
+            } catch (\Throwable $e) {
+                return true; // fail-open on error
+            }
+
+            return true;
+        };
+
+        // Gate: hide for Super Administrator and Officer
+        $hideForSuperAdminOrOfficer = function ($user) use ($resolveRoleName) {
+            if (! $user) {
+                return false;
+            }
+
+            try {
+                $roleName = $resolveRoleName($user);
+                if ($roleName && (
+                    strcasecmp($roleName, 'Super Administrator') === 0 ||
+                    strcasecmp($roleName, 'Officer') === 0
+                )) {
+                    return false; // hide for Super Administrator or Officer
+                }
+            } catch (\Throwable $e) {
+                return true;
+            }
+
+            return true;
+        };
+
+        // Gates hidden only from Super Administrators
+        foreach ([
+            'view-dashboard',
+            'view-students-menu',
+            'view-events',
+            'view-violation',
+            'view-fees',
+            'view-announcements',
+                'view-attendance',
+                'view-payments',
+                'view-reports',
+        ] as $gate) {
+            Gate::define($gate, $hideIfSuperAdmin);
+        }
+
+        // Gates hidden from Officers
+        foreach ([
+            'view-dashboard',
+            'view-students-menu',
+            'view-events',
+            'view-violation',
+            'view-fees',
+            'view-announcements',
+        ] as $gate) {
+            Gate::define($gate, $hideForSuperAdminOrOfficer);
+        }
     }
 }

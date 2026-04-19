@@ -1,0 +1,33 @@
+.card_stat {
+    background-color: rgb(230, 248, 240);
+}
+
+
+.card_inner {
+    border-radius: 5px 5px 0px 0px;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        padding: 1.5rem 1.25rem;
+        /* Base forest green (matches settings) */
+        background-color: #398547;
+        /* subtle layered ellipses texture */
+        background-image:
+            radial-gradient(
+                ellipse 40% 100% at 100% 20%,
+                rgba(255, 255, 255, 0.118) 80%,
+                transparent 50%
+            ),
+            radial-gradient(
+                ellipse 100% 90% at 100% 70%,
+                rgba(76, 175, 80, 0.28) 0%,
+                transparent 55%
+            ),
+            radial-gradient(
+                circle 180px at 100% 100%,
+                rgba(110, 155, 123, 0.22) 0%,
+                transparent 70%
+            );
+    }
+
+

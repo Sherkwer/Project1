@@ -1,0 +1,15 @@
+/* Local placeholder for Simple-DataTables CSS
+   Purpose: avoid external CDN requests that trigger browser Tracking Prevention.
+   Replace this file with the real `style.min.css` from simple-datatables when needed
+   (e.g., copy from CDN or install via npm and build).
+*/
+
+/* Minimal table styling fallback */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th, .table td {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+}

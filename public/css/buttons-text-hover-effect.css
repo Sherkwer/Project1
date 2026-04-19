@@ -1,0 +1,47 @@
+ .card {
+        border-radius: 10px;
+    }
+
+    .btn {
+        border-radius:7px;
+    }
+
+    .gap-2 > * {
+        margin-left: 10px;
+    }
+
+/* General button hover effects */
+.btn { position: relative; transition: all 0.3s ease; }
+    .btn:hover {
+        transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .btn-groups{
+        display: flex;
+        gap: 15px;
+        position: relative;
+    }
+
+    .btn-groups .btn {
+        position: relative;
+        z-index: auto;
+    }
+
+    .btn-groups .btn:hover {
+        z-index: 100;
+    }
+
+
+
+    .view-btn:hover::after {
+         content: "View"; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: #17a2b8; color: #000000; padding: 4px 8px; border-radius: 4px; font-size: 14px; white-space: nowrap; z-index: 1001; opacity: 1;
+        }
+
+    .edit-btn:hover::after {
+         content: "Edit"; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: #ffd900; color: #000000; padding: 4px 8px; border-radius: 4px; font-size: 14px; white-space: nowrap; z-index: 1001; opacity: 1;
+        }
+
+    .delete-btn:hover::after {
+         content: "Delete"; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: #dc3545; color: #000000; padding: 4px 8px; border-radius: 4px; font-size: 14px; white-space: nowrap; z-index: 1001; opacity: 1;
+        }
+
+

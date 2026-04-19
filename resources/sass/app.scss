@@ -1,0 +1,13 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// custom adminlte sidebar background color
+.sidebar-dark-custom {
+  background-color: #0D3A2B !important;
+}

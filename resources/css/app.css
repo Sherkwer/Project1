@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+.sidebar-dark-custom {
+  background-color: #0D3A2B !important;
+}
+
+/* Sidebar links */
+.sidebar-dark-custom .nav-sidebar > .nav-item > .nav-link {
+  color: #d1e7dd;
+}
+
+/* Hover effect */
+.sidebar-dark-custom .nav-sidebar > .nav-item > .nav-link:hover {
+  background-color: #145c43;
+  color: #ffffff;
+}
+
+/* Active link */
+.sidebar-dark-custom .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: #1f7a5a;
+  color: #ffffff;
+}

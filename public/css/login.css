@@ -1,0 +1,125 @@
+body {
+    background: #e6e6e6;
+    font-family: Arial, sans-serif;
+}
+
+.container-card {
+    max-width: 1000px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    margin-top: 60px;
+}
+
+/* LEFT PANEL */
+.left-panel {
+    background: #057331;
+    color: #fff;
+    padding: 50px 30px;
+    position: relative;
+}
+
+.left-panel::before,
+.left-panel::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+}
+
+.left-panel::before { top: -60px; right: -60px; }
+.left-panel::after { bottom: -60px; left: -60px; }
+
+.system-title {
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+.system-subtitle {
+    font-size: 15px;
+    margin-bottom: 30px;
+}
+
+.feature-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 25px;
+}
+
+.feature-list li {
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.feature-list li::before {
+    content: "✔";
+    margin-right: 10px;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+    padding: 50px 60px;
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    background-color: #10B981;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    background-image: url("/images/landing/user.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    border: 3px solid #fff;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-control {
+    height: 45px;
+    border-radius: 6px;
+}
+
+.login-btn {
+    height: 45px;
+    background: #0EB24F;
+    color: #fff;
+    border-radius: 6px;
+    font-weight: 600;
+    box-shadow: 1px 2px 2px #035f2976;
+    border-radius: 6px;
+}
+
+.login-btn:hover {
+    background: #0EB24F;
+    color: #fff;
+}
+
+.forgot-link {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.register-text {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.register-text a {
+    color: #0EB24F;
+    font-weight: 600;
+    text-decoration: none;
+}

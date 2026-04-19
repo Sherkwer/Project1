@@ -1,0 +1,59 @@
+body {
+    background: #e6e6e6;
+    font-family: Arial, sans-serif;
+}
+
+.container-card {
+    max-width: 1000px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    margin-top: 50px;
+}
+
+.left-panel {
+    background: #057331;
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+.left-panel::before,
+.left-panel::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+}
+
+.left-panel::before { top: -50px; right: -50px; }
+.left-panel::after { bottom: -50px; left: -50px; }
+
+.logo-circle {
+    background-image: url('public/images/landing/ifsu-logo.png');
+    width: 100px;
+    height: 100px;
+    background: #06ba4e;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
+.right-panel {
+    padding: 40px;
+}
+
+.top-link { font-size: 14px; margin-bottom: 20px; color: #0EB24F; cursor: pointer; }
+.form-title { text-align: center; margin-bottom: 25px; }
+.form-title h1 { font-size: 24px; margin-bottom: 5px; }
+.form-title p { font-size: 14px; color: #777; }
+
+.button-group button { height: 45px; border-radius: 6px; font-size: 15px; }
+.cancel-btn { background: #54C381; color: #fff; }
+.register-btn { background: #0EB24F; color: #fff; }
+
+.bottom-text { text-align: center; margin-top: 20px; font-size: 14px; }
+.bottom-text a { color: #0EB24F; font-weight: bold; text-decoration: none; }

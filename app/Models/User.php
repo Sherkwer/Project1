@@ -89,11 +89,13 @@ class User extends Authenticatable implements MustVerifyEmail
     return asset('images/landing/user1-128x128.jpg');
     }
     /**
-     * Role relation - map user's `user_role` string to `tbl_roles.name`.
+     * Role relation - `users.user_role` stores the numeric `tbl_roles.id`.
+     * This sets up a proper belongsTo relation using the foreign key `user_role`
+     * referencing `tbl_roles.id`.
      */
     public function role(): BelongsTo
     {
-        return $this->belongsTo(ManageRolesModel::class, 'user_role', 'name');
+        return $this->belongsTo(ManageRolesModel::class, 'user_role', 'id');
     }
 
     /**
@@ -101,12 +103,21 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getRoleName(): ?string
     {
+        // Prefer the relation if loaded or available
         if ($this->relationLoaded('role') && $this->role) {
             return $this->role->name;
         }
         if ($this->role) {
             return $this->role->name;
         }
+
+        // If `user_role` stores an id, try to resolve it
+        if (isset($this->user_role) && is_numeric($this->user_role)) {
+            $role = ManageRolesModel::find((int) $this->user_role);
+            return $role->name ?? null;
+        }
+
+        // Fallback: return whatever string is in user_role (legacy)
         return $this->user_role ?? null;
     }
 
@@ -119,15 +130,41 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasRole($roles): bool
     {
         $rolesArray = is_array($roles) ? $roles : preg_split('/[|,]/', (string) $roles);
-        $name = $this->getRoleName();
-        if (! $name) {
-            return false;
+
+        // Resolve user's role id and name
+        $userRoleId = null;
+        try {
+            if (isset($this->user_role) && is_numeric($this->user_role)) {
+                $userRoleId = (int) $this->user_role;
+            } elseif ($this->role) {
+                $userRoleId = $this->role->id ?? null;
+            }
+        } catch (\Throwable $e) {
+            $userRoleId = null;
         }
+
+        $userRoleName = $this->getRoleName();
+
         foreach ($rolesArray as $r) {
-            if (trim($r) === $name) {
+            $r = trim((string) $r);
+            if ($r === '') {
+                continue;
+            }
+
+            // If provided role is numeric -> compare by id
+            if (ctype_digit($r)) {
+                if ($userRoleId !== null && $userRoleId === (int) $r) {
+                    return true;
+                }
+                continue;
+            }
+
+            // Otherwise compare by name (case-insensitive)
+            if ($userRoleName && strcasecmp($r, $userRoleName) === 0) {
                 return true;
             }
         }
+
         return false;
     }
 
