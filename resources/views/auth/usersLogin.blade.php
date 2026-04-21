@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <title>Login - College Admin</title>
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
 <!-- Bootstrap CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
 <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 
 <body>
@@ -32,7 +32,7 @@
                     @endif
                 </span>
                  <br>
-                <span style="font-weight:400;">Login Form</span> --}}
+                <span style="font-weight:400;">Login Form</span> --}} 
             </div>
 
             <div class="system-subtitle mt-4">
