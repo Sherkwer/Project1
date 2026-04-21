@@ -95,7 +95,7 @@ class UsersLoginController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::whereRaw('LOWER(email) = ?', [strtolower($request->email)])->first();
+        $user = User::where('email', $request->email)->first();
 
         if (! $user) {
             return response()->json([
