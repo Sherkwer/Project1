@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Carbon\Carbon;
-use App\Http\Controllers\Auth\Log;
 
 class UsersLoginController extends Controller
 {
@@ -92,34 +91,38 @@ class UsersLoginController extends Controller
      */
      public function sendPasswordOtp(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-            ]);
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json(['error' => 'Invalid email address.'], 422);
-            }
+        $user = User::where('email', $request->email)->first();
 
-            // Using case-insensitive lookup for email
-            $email = $request->input('email');
-            $user = User::whereRaw('LOWER(email) = ?', [strtolower($email)])->first();
-
-            if (!$user) {
-                Log::warning('Password reset attempt for non-existing email: ' . $email);
-                return response()->json(['error' => 'Email address not found.'], 404);
-            }
-
-            // Continue with sending OTP...
-
-        } catch (\Exception $e) {
-            Log::error('Error in sendPasswordOtp: ' . $e->getMessage(), [
-                'email' => $request->input('email'),
-                'request_data' => $request->all(),
-            ]);
-            return response()->json(['error' => 'An error occurred while processing your request.'], 500);
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'We could not find an account with that email address.',
+            ], 404);
         }
+
+        $code = rand(100000, 999999);
+
+        // reuse verification fields for password reset OTP
+        $user->verification_code = $code;
+        $user->verification_created_at = now();
+        $user->is_requested_vrc = 1;
+        $user->save();
+
+        Mail::raw("Your password reset OTP code is: {$code}", function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Password Reset OTP Code');
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'An OTP has been sent to your email address.',
+        ]);
     }
+
     
     /**
      * Reset password using OTP code sent to email.
