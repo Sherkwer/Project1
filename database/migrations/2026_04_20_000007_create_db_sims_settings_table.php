@@ -21,7 +21,7 @@ return new class extends Migration
             $table->double('min_student_class');
             $table->double('max_student_class');
             $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamp('updated_at')->nullable();
             $table->double('updated_user_id')->nullable();
         });
     }
