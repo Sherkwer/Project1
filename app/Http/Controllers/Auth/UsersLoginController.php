@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Http\Controllers\Auth\Log;
 
 class UsersLoginController extends Controller
 {
