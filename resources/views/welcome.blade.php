@@ -22,7 +22,7 @@
             <header class="header" role="banner" id="header" >
                 <a class="header__brand" style="gap: 10px;" aria-label="IFUGAO STATE UNIVERSITY - Home">
                     <img
-                        src="images/landing/ifsu-logo.png"
+                        src="{{ asset('images/landing/ifsu-logo.png') }}"
                         alt="IFUGAO STATE UNIVERSITY Logo"
                         class="header__logo"
                         width="56"
