@@ -13,15 +13,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('db_sims_settings', function (Blueprint $table) {
-            $table->double('id')->nullable();
-            $table->string('school_name', 450)->nullable();
-            $table->string('school_code', 12)->nullable();
-            $table->double('c_period')->nullable();
-            $table->string('c_curriculum_year', 27)->nullable();
-            $table->double('min_student_class')->nullable();
-            $table->double('max_student_class')->nullable();
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->onUpdate(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default('0000-00-00 00:00:00');
+            $table->double('id');
+            $table->string('school_name', 450);
+            $table->string('school_code', 12);
+            $table->double('c_period');
+            $table->string('c_curriculum_year', 27);
+            $table->double('min_student_class');
+            $table->double('max_student_class');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
             $table->double('updated_user_id')->nullable();
         });
     }
