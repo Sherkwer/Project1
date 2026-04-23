@@ -306,3 +306,39 @@ Route::middleware(['role:superadmin,admin,officer'])->group(function () {
 Route::get('/usersRegistration', [UsersRegistrationController::class, 'showRegistrationForm'])->name('usersRegistration');
 Route::post('/register', [UsersRegistrationController::class, 'register'])->name('register');
 
+// ── Debug: Login Issue Diagnostic ────────────────────────────────────────────
+// Protected by auth — only accessible to logged-in users.
+// Visit /debug/login-issue to run the diagnostic and view results in the browser.
+// Remove or restrict this route once the issue is resolved.
+Route::get('/debug/login-issue', function () {
+    $email    = request('email', 'developerdev631@gmail.com');
+    $password = request('password', '12345678');
+
+    $command = new \App\Console\Commands\DebugLoginIssue();
+
+    // Capture Artisan output into a string buffer
+    $output = new \Symfony\Component\Console\Output\BufferedOutput();
+    $input  = new \Symfony\Component\Console\Input\ArrayInput([
+        '--email'    => $email,
+        '--password' => $password,
+    ]);
+
+    $command->setLaravel(app());
+    $command->run($input, $output);
+
+    $result = $output->fetch();
+
+    // Strip ANSI colour codes so the browser renders plain text cleanly
+    $result = preg_replace('/\x1B\[[0-9;]*[mGKHF]/u', '', $result);
+
+    return response(
+        '<html><head><title>Login Debug</title>'
+        . '<style>body{background:#1e1e1e;color:#d4d4d4;font-family:monospace;padding:2rem;white-space:pre-wrap;font-size:14px;line-height:1.6;}</style>'
+        . '</head><body>'
+        . htmlspecialchars($result, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+        . '</body></html>',
+        200,
+        ['Content-Type' => 'text/html']
+    );
+})->middleware('auth')->name('debug.login-issue');
+
