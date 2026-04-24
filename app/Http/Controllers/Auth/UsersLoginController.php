@@ -19,6 +19,7 @@ class UsersLoginController extends Controller
     public function showLoginForm(Request $request)
     {
         $roleKey = $request->query('role');
+        $dd = $request->all();
         $roles = [
             'super_admin' => 'Super Administrator',
             'admin' => 'Administrator',
