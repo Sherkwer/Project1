@@ -19,7 +19,7 @@ class UsersLoginController extends Controller
     public function showLoginForm(Request $request)
     {
         $roleKey = $request->query('role');
-        $dd = $request->all();
+        
         $roles = [
             'super_admin' => 'Super Administrator',
             'admin' => 'Administrator',
@@ -29,6 +29,7 @@ class UsersLoginController extends Controller
         $loginRole = $roles[$roleKey] ?? null;
         return view('auth.usersLogin', compact('loginRole'));
     }
+    funct
 
     /**
      * Handle user login
@@ -96,7 +97,8 @@ class UsersLoginController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $email = trim(strtolower($request->email));
+        $user = User::whereRaw('LOWER(email) = ?', [$email])->first();
 
         if (! $user) {
             return response()->json([
