@@ -65,6 +65,10 @@ Route::middleware([ 'throttle:10,1'])->group(function () {
     Route::post('/logout', [UsersLoginController::class, 'logout'])->name('logout');
 
     // Forgot password via OTP
+     Route::options('/password/forgot/send-otp', function () {
+        return response()->json([], 200);
+    });
+    
     Route::post('/password/forgot/send-otp', [UsersLoginController::class, 'sendPasswordOtp'])->name('password.forgot.sendOtp');
     Route::post('/password/forgot/reset', [UsersLoginController::class, 'resetPasswordWithOtp'])->name('password.forgot.reset');
 });
