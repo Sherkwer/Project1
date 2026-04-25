@@ -29,7 +29,7 @@ class UsersLoginController extends Controller
         $loginRole = $roles[$roleKey] ?? null;
         return view('auth.usersLogin', compact('loginRole'));
     }
-    funct
+    
 
     /**
      * Handle user login
