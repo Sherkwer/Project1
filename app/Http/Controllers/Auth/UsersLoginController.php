@@ -136,7 +136,7 @@ class UsersLoginController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $user = User::whereRaw('LOWER(email) = ?', [strtolower($request->email)])->first();
+        $user = User::where('email', $request->email)->first();
 
         if (! $user || ! $user->verification_code) {
             return back()->withErrors(['otp' => 'Invalid or expired OTP.'])->withInput();
