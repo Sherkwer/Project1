@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use App\Models\SystemSettingsModel\ManageRolesModel;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Blade::if('role', function ($roles) {
-            if (! auth()->check()) {
+            if (! Auth::check()) {
                 return false;
             }
-            return auth()->user()->hasAnyRole($roles);
+            return Auth::user()->hasAnyRole($roles);
         });
 
 
@@ -41,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
                 if (method_exists($user, 'getRoleName')) {
                     return $user->getRoleName();
                 } elseif (isset($user->user_role) && is_numeric($user->user_role)) {
-                    $r = ManageRolesModel::find((int) $user->user_role);
+                    $r = ManageRolesModel::query()->find((int) $user->user_role);
                     return $r->name ?? null;
                 } elseif (isset($user->role) && $user->role) {
                     return $user->role->name ?? null;
@@ -71,22 +72,19 @@ class AppServiceProvider extends ServiceProvider
             return true;
         };
 
-        // Gate: hide for Super Administrator and Officer
-        $hideForSuperAdminOrOfficer = function ($user) use ($resolveRoleName) {
+        // Gate: hide for Officer only
+        $hideIfOfficer = function ($user) use ($resolveRoleName) {
             if (! $user) {
                 return false;
             }
 
             try {
                 $roleName = $resolveRoleName($user);
-                if ($roleName && (
-                    strcasecmp($roleName, 'Super Administrator') === 0 ||
-                    strcasecmp($roleName, 'Officer') === 0
-                )) {
-                    return false; // hide for Super Administrator or Officer
+                if ($roleName && strcasecmp($roleName, 'Officer') === 0) {
+                    return false; // hide for Officer
                 }
             } catch (\Throwable $e) {
-                return true;
+                return true; // fail-open on error
             }
 
             return true;
@@ -116,7 +114,7 @@ class AppServiceProvider extends ServiceProvider
             'view-fees',
             'view-announcements',
         ] as $gate) {
-            Gate::define($gate, $hideForSuperAdminOrOfficer);
+            Gate::define($gate, $hideIfOfficer);
         }
     }
 }
