@@ -96,15 +96,15 @@
                 <input type="hidden" name="role" value="{{ request()->query('role') ?? old('role') }}">
 
                 <div class="mb-3">
-                    <label class="form-label">Email / Username</label>
-                    <input type="email" name="email" class="form-control"
-                        placeholder="Enter your email or username" required value="{{ old('email') }}">
+                    <label for="login-email" class="form-label">Email / Username</label>
+                    <input type="email" id="login-email" name="email" class="form-control"
+                        placeholder="Enter your email or username" autocomplete="username" required value="{{ old('email') }}">
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control"
-                        placeholder="Enter your password" required>
+                    <label for="login-password" class="form-label">Password</label>
+                    <input type="password" id="login-password" name="password" class="form-control"
+                        placeholder="Enter your password" autocomplete="current-password" required>
                 </div>
 
                 <div class="d-grid mt-4">
@@ -140,13 +140,13 @@
 
                     <div class="mb-3">
                         <label for="fp-email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="fp-email" name="email" placeholder="Enter your registered email" required>
+                        <input type="email" class="form-control" id="fp-email" name="email" autocomplete="email" placeholder="Enter your registered email" required>
                     </div>
 
                     <div class="mb-3 d-flex gap-2 align-items-end">
                         <div class="flex-grow-1">
                             <label for="fp-otp" class="form-label">OTP Code</label>
-                            <input type="text" class="form-control" id="fp-otp" name="otp" placeholder="Enter OTP received via email" maxlength="6">
+                            <input type="text" class="form-control" id="fp-otp" name="otp" autocomplete="one-time-code" placeholder="Enter OTP received via email" maxlength="6">
                         </div>
                         <button type="button" class="btn btn-outline-success" id="send-otp-btn">
                             Send OTP
@@ -155,12 +155,12 @@
 
                     <div class="mb-3">
                         <label for="fp-password" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="fp-password" name="password" minlength="8" required>
+                        <input type="password" class="form-control" id="fp-password" name="password" autocomplete="new-password" minlength="8" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="fp-password-confirmation" class="form-label">Confirm New Password</label>
-                        <input type="password" class="form-control" id="fp-password-confirmation" name="password_confirmation" minlength="8" required>
+                        <input type="password" class="form-control" id="fp-password-confirmation" name="password_confirmation" autocomplete="new-password" minlength="8" required>
                     </div>
 
                     <div id="forgot-password-status" class="small text-muted mb-2"></div>
@@ -190,7 +190,10 @@
 
         if (sendOtpBtn) {
             sendOtpBtn.addEventListener('click', function () {
-                if (!emailInput.value.trim()) {
+                const emailValue = emailInput.value.trim();
+                emailInput.value = emailValue;
+
+                if (!emailValue) {
                     statusEl.textContent = 'Please enter your email address first.';
                     statusEl.classList.remove('text-success');
                     statusEl.classList.add('text-danger');
@@ -203,13 +206,15 @@
 
                 fetch('{{ route('password.forgot.sendOtp') }}', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
-                    body: JSON.stringify({
-                        email: emailInput.value.trim()
+                    body: new URLSearchParams({
+                        email: emailValue
                     })
                 })
                 .then(response => response.json())
