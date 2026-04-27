@@ -14,13 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'fullname' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        StudentsManagementModel::factory()->count(50)->create();
+       $this->call([
+        UserSeeder::class,
+    ]);
     }
 }

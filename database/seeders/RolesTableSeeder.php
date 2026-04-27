@@ -14,7 +14,7 @@ class RolesTableSeeder extends Seeder
     public function run(): void
     {
         $now = Carbon::now();
-        $roles = ['Super Administrator', 'Administrator', 'Officer', 'Student'];
+        $roles = ['Super Administrator', 'Administrator', 'Officer'];
 
         foreach ($roles as $r) {
             DB::table('tbl_roles')->updateOrInsert(
