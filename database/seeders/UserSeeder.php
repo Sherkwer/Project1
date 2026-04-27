@@ -17,11 +17,11 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'fname' => 'John',
-                'mname' => 'A',
-                'lname' => 'Doe',
-                'fullname' => 'John A Doe',
-                'email' => 'admin@example.com',
+                'fname' => 'Jetro',
+                'mname' => 'P',
+                'lname' => 'Pad-ay',
+                'fullname' => 'Jetro P Pad-ay',
+                'email' => 'developerdev631@gmail.com',
                 'password' => Hash::make('12345678'),
                 'user_role' => 1,
                 'area_code' => '001',
@@ -32,38 +32,7 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'fname' => 'Maria',
-                'mname' => 'B',
-                'lname' => 'Santos',
-                'fullname' => 'Maria B Santos',
-                'email' => 'officer@example.com',
-                'password' => Hash::make('12345678'),
-                'user_role' => 2,
-                'area_code' => '002',
-                'department_id' => 1,
-                'organization_id' => 1,
-                'is_approved' => 1,
-                'is_admin' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'fname' => 'Juan',
-                'mname' => 'C',
-                'lname' => 'Dela Cruz',
-                'fullname' => 'Juan C Dela Cruz',
-                'email' => 'student@example.com',
-                'password' => Hash::make('12345678'),
-                'user_role' => 3,
-                'area_code' => '003',
-                'department_id' => 1,
-                'organization_id' => 1,
-                'is_approved' => 1,
-                'is_admin' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+           
         ]);
     }
 }
