@@ -13,31 +13,35 @@ class RolesTableSeeder extends Seeder
      */
     public function run(): void
     {
-         DB::table('tbl_roles')->insert([
-            ['id' => 1],
-                [
-                    'name' => 'Administrator',
-                    'description' => 'Full system access',
-                    'updated_at' => now(),
-                ],
-            ['id' => 2],
-                [
-                    'name' => 'Officer',
-                    'description' => 'Manages records and operations',
-                    'updated_at' => now(),
-                ],
-            ['id' => 3],
-                [
-                    'name' => 'Student',
-                    'description' => 'Regular user access',
-                    'updated_at' => now(),
-                ],
-            ['id' => 4],
-                [
-                    'name' => 'Super Administrator',
-                    'description' => 'System owner with full privileges',
-                    'updated_at' => now(),
-                ],                             
+        DB::table('tbl_roles')->insert([
+            [
+                'id' => 1,
+                'name' => 'Administrator',
+                'description' => 'Full system access',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 2,
+                'name' => 'Officer',
+                'description' => 'Manages records and operations',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 3,
+                'name' => 'Student',
+                'description' => 'Regular user access',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id' => 4,
+                'name' => 'Super Administrator',
+                'description' => 'System owner with full privileges',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }
