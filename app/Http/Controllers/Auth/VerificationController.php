@@ -56,17 +56,31 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
-        $user = User::findOrFail($request->route('id'));
+        try {
+            $user = User::findOrFail($request->route('id'));
 
-        if ($user->hasVerifiedEmail()) {
-            return redirect('/home')->with('success', 'Email already verified.');
+            // Validate that the hash in the URL matches the user's email.
+            if (! hash_equals(
+                (string) $request->route('hash'),
+                sha1($user->getEmailForVerification())
+            )) {
+                return redirect('/email/verify')->with('error', 'Invalid verification link. Please request a new one.');
+            }
+
+            if ($user->hasVerifiedEmail()) {
+                return redirect('/home')->with('success', 'Email already verified.');
+            }
+
+            if ($user->markEmailAsVerified()) {
+                event(new Verified($user));
+            }
+
+            return redirect('/home')->with('success', 'Email verified successfully!');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect('/email/verify')->with('error', 'User not found. Please log in and try again.');
+        } catch (\Throwable $e) {
+            return redirect('/email/verify')->with('error', 'Something went wrong. Please try again later.');
         }
-
-        if ($user->markEmailAsVerified()) {
-            event(new Verified($user));
-        }
-
-        return redirect('/home')->with('success', 'Email verified successfully!');
     }
 
     /**
@@ -78,8 +92,12 @@ class VerificationController extends Controller
             return redirect('/home')->with('success', 'Email already verified.');
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        try {
+            $request->user()->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to send verification email. Please try again later.');
+        }
 
-        return back()->with('success', 'Verification link sent!');
+        return back()->with('success', 'Verification link sent! Please check your inbox.');
     }
 }
