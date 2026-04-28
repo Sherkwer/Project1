@@ -82,4 +82,16 @@ class VerificationController extends Controller
 
         return back()->with('success', 'Verification link sent!');
     }
+
+    /**
+     * Check if the authenticated user's email has been verified.
+     */
+    public function checkVerification(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'verified' => $user->hasVerifiedEmail(),
+        ]);
+    }
 }
