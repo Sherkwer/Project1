@@ -68,7 +68,7 @@ Route::middleware([ 'throttle:10,1'])->group(function () {
      Route::options('/password/forgot/send-otp', function () {
         return response()->json([], 200);
     });
-
+    
     Route::post('/password/forgot/send-otp', [UsersLoginController::class, 'sendPasswordOtp'])->name('password.forgot.sendOtp');
     Route::post('/password/forgot/reset', [UsersLoginController::class, 'resetPasswordWithOtp'])->name('password.forgot.reset');
 });
@@ -81,7 +81,6 @@ Route::middleware([ 'throttle:10,1'])->group(function () {
     Route::get('/email/verify', [VerificationController::class, 'show'])->middleware('auth')->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware('auth', 'signed')->name('verification.verify');
     Route::post('/email/resend', [VerificationController::class, 'resend'])->middleware('auth')->name('verification.resend');
-    Route::get('/api/check-email-verification', [VerificationController::class, 'checkVerification'])->middleware('auth')->name('api.check-email-verification');
     // -------------------------------------------------}>
 
 
