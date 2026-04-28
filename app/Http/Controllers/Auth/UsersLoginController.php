@@ -19,7 +19,7 @@ class UsersLoginController extends Controller
     public function showLoginForm(Request $request)
     {
         $roleKey = $request->query('role');
-        
+
         $roles = [
             'super_admin' => 'Super Administrator',
             'admin' => 'Administrator',
@@ -29,7 +29,7 @@ class UsersLoginController extends Controller
         $loginRole = $roles[$roleKey] ?? null;
         return view('auth.usersLogin', compact('loginRole'));
     }
-    
+
 
     /**
      * Handle user login
@@ -81,7 +81,13 @@ class UsersLoginController extends Controller
             }
 
             $request->session()->regenerate();
-            return redirect()->intended('home');
+
+            // Send email verification notification automatically
+            if (! $user->hasVerifiedEmail()) {
+                $user->sendEmailVerificationNotification();
+            }
+
+            return redirect()->route('verification.notice');
         }
 
         // Login failed
@@ -126,7 +132,7 @@ class UsersLoginController extends Controller
         ]);
     }
 
-    
+
     /**
      * Reset password using OTP code sent to email.
      */
