@@ -32,7 +32,7 @@
                     @endif
                 </span>
                  <br>
-                <span style="font-weight:400;">Login Form</span> --}}
+                <span style="font-weight:400;">Login Form</span> --}} 
             </div>
 
             <div class="system-subtitle mt-4">
@@ -98,7 +98,7 @@
                 <div class="mb-3">
                     <label for="login-email" class="form-label">Email / Username</label>
                     <input type="email" id="login-email" name="email" class="form-control"
-                        placeholder="Enter your email or username" autocomplete="username" required>
+                        placeholder="Enter your email or username" autocomplete="username" required value="{{ old('email') }}">
                 </div>
 
                 <div class="mb-3">
